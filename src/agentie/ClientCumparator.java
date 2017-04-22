@@ -1,12 +1,22 @@
 package agentie;
 
-public class ClientCumparator extends Persoana {
+import java.text.NumberFormat;
+import java.util.Locale;
 
+public class ClientCumparator extends Persoana {
+    Locale locale = new Locale("fr", "FR");
+    NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
     double buget;
 
     public ClientCumparator(String nume, int varsta, double buget) {
         super(nume, varsta);
-        this.buget = buget;
+        
+        if(buget < 0) {
+            throw new IllegalArgumentException("Bugetul nu poate sa fie negativ!");
+        } else {
+           this.buget = buget;
+           statut = "cumparator";
+        }
     }
 
     public double getBuget() {
@@ -14,7 +24,11 @@ public class ClientCumparator extends Persoana {
     }
 
     public void setBuget(float buget) {
-        this.buget = buget;
+        if(buget < 0) {
+            throw new IllegalArgumentException("Bugetul nu poate sa fie negativ!");
+        } else {
+            this.buget = buget;
+        }
     }
 
     public void afisare() {
@@ -22,5 +36,12 @@ public class ClientCumparator extends Persoana {
         System.out.println("    Varsta: " + getVarsta() + " ani");
         System.out.println("    Buget: " + getBuget() + " EUR");
     }
+
+    @Override
+    public String toString() {
+        return getNume() + "  |  " + getVarsta() + "  |  " + currencyFormatter.format(getBuget()) + "  |  " + getStatut();
+    }
+    
+    
 
 }   //ClientCumparator

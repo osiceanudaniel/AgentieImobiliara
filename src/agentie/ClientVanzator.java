@@ -1,12 +1,17 @@
 package agentie;
 
-public class ClientVanzator extends Persoana {
+import java.text.NumberFormat;
+import java.util.Locale;
 
+public class ClientVanzator extends Persoana {
+    Locale locale = new Locale("fr", "FR");
+    NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
     Locuinta locuinta;
 
     public ClientVanzator(String nume, int varsta, Locuinta locuinta) {
         super(nume, varsta);
         this.locuinta = locuinta;
+        statut = "vanzator";
     }
 
     public Locuinta getLocuinta() {
@@ -23,6 +28,11 @@ public class ClientVanzator extends Persoana {
         System.out.println("Locuinta sa: ");
         locuinta.afisare();
         System.out.println("");
+    }
+
+    @Override
+    public String toString() {
+        return getNume() + "  |  " + getVarsta() + "  |  " + currencyFormatter.format(getLocuinta().getPretVanzare()) + "  |  " + getStatut();
     }
 
 }   //ClientVanzator

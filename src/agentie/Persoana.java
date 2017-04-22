@@ -4,10 +4,15 @@ public class Persoana {
 
     String nume;
     int varsta;
+    String statut;
 
     public Persoana(String nume, int varsta) {
-        this.nume = nume;
-        this.varsta = varsta;
+        if(varsta < 18) {
+            throw new IllegalArgumentException("Clientul nu poate fi minor!");
+        } else {
+            this.nume = nume;
+            this.varsta = varsta;
+        }
     }
 
     public void setNume(String nume) {
@@ -15,7 +20,11 @@ public class Persoana {
     }
 
     public void setVarsta(int varsta) {
-        this.varsta = varsta;
+        if(varsta < 18) {
+            throw new IllegalArgumentException("Clientul nu poate fi minor!");
+        } else {
+            this.varsta = varsta;
+        }
     }
 
     public String getNume() {
@@ -24,6 +33,10 @@ public class Persoana {
 
     public int getVarsta() {
         return varsta;
+    }
+
+    public String getStatut() {
+        return statut;
     }
 
 }   //Persoana

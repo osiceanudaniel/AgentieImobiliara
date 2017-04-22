@@ -1,6 +1,7 @@
 package agentie;
 
 import java.util.ArrayList;
+import javax.swing.AbstractListModel;
 
 public class Agentie {
 
@@ -180,5 +181,5 @@ public class Agentie {
             }
         }
     }
-
+    
 }   //Agentie
