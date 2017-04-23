@@ -1,7 +1,6 @@
 package agentie;
 
 import java.text.NumberFormat;
-import java.util.ArrayList;
 import java.util.Locale;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
@@ -14,6 +13,13 @@ public final class Gui extends javax.swing.JFrame {
     DefaultListModel listaAgentie;
     DefaultListModel listaClienti;
     DefaultListModel listaLocuinte;
+    DefaultListModel listaLocuinteDeCumparat;
+    DefaultListModel listaLocuinteDeInchiriat;
+    DefaultListModel listaAgenti;
+    AgentVanzari agent1;
+    AgentVanzari agent2;
+    ClientCumparator clientGlobal;
+    ClientCumparator clientGlobal2;
 
     public Gui() {
         initComponents();
@@ -22,12 +28,19 @@ public final class Gui extends javax.swing.JFrame {
         locuinteDialoxBox.setLocationRelativeTo(null);
         adaugaClientLocuintaDialogBox.setLocationRelativeTo(null);
         adaugaClientCumparatorDialogBox.setLocationRelativeTo(null);
+        agentiDialoxBox.setLocationRelativeTo(null);
+        locuinteDeCumparatDialoxBox.setLocationRelativeTo(null);
+        locuinteDeInchiriatDialoxBox.setLocationRelativeTo(null);
         
         Locale locale = new Locale("fr", "FR");
         currencyFormatter = NumberFormat.getCurrencyInstance(locale);
+        
         listaAgentie = new DefaultListModel();
         listaClienti = new DefaultListModel();
         listaLocuinte = new DefaultListModel();
+        listaAgenti = new DefaultListModel();
+        listaLocuinteDeCumparat = new DefaultListModel();
+        listaLocuinteDeInchiriat = new DefaultListModel();
 
         //test
         agentie = new Agentie("Agentia ta", "Splaiul Independentei, 290", 250000);
@@ -37,6 +50,9 @@ public final class Gui extends javax.swing.JFrame {
         listaInformatiiAgentie.setModel(listaAgentie);
         listaInformatiiClienti.setModel(listaClienti);
         listaInformatiiLocuinte.setModel(listaLocuinte);
+        listaInformatiiAgenti.setModel(listaAgenti);
+        listaInformatiiLocuinteDeCumparat.setModel(listaLocuinteDeCumparat);
+        listaInformatiiLocuinteDeInchiriat.setModel(listaLocuinteDeInchiriat);
 
         bugetAgentie = currencyFormatter.format(agentie.getBuget());
         labelNumeAgentie.setText(agentie.getNume());
@@ -46,6 +62,9 @@ public final class Gui extends javax.swing.JFrame {
         populareListaAgentie();
         populareListaClienti();
         populareListaLocuinte();
+        populareListaAgenti();
+        populareListaLocuinteDeCumparat();
+        populareListaLocuinteDeInchiriat();
     }
 
     @SuppressWarnings("unchecked")
@@ -105,6 +124,23 @@ public final class Gui extends javax.swing.JFrame {
         labelBugetClientCumparator = new javax.swing.JLabel();
         textFieldVarstaClientCumparator = new javax.swing.JTextField();
         labelBugetEUR = new javax.swing.JLabel();
+        agentiDialoxBox = new javax.swing.JDialog();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        listaInformatiiAgenti = new javax.swing.JList<>();
+        butonExitFereastraAgenti = new javax.swing.JButton();
+        labelInformatiiAgenti = new javax.swing.JLabel();
+        locuinteDeCumparatDialoxBox = new javax.swing.JDialog();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        listaInformatiiLocuinteDeCumparat = new javax.swing.JList<>();
+        butonExitFereastraLocuinteDeCumparat = new javax.swing.JButton();
+        labelStructuraListaLocuinteDeCumparat = new javax.swing.JLabel();
+        butonOkCumparaLocuinta = new javax.swing.JButton();
+        locuinteDeInchiriatDialoxBox = new javax.swing.JDialog();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        listaInformatiiLocuinteDeInchiriat = new javax.swing.JList<>();
+        butonExitFereastraLocuinteDeInchiriat = new javax.swing.JButton();
+        labelStructuraListaLocuinteDeCumparat1 = new javax.swing.JLabel();
+        butonOkInchiriazaLocuinta = new javax.swing.JButton();
         labelNumeAgentie = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         listaInformatiiAgentie = new javax.swing.JList<>();
@@ -200,9 +236,9 @@ public final class Gui extends javax.swing.JFrame {
                             .addGroup(clientiDialoxBoxLayout.createSequentialGroup()
                                 .addGap(59, 59, 59)
                                 .addGroup(clientiDialoxBoxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(butonCumparaLocuinta)
                                     .addComponent(butonInchiriazaLocuinta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(vindeLocuinta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                    .addComponent(vindeLocuinta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(butonCumparaLocuinta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
             .addGroup(clientiDialoxBoxLayout.createSequentialGroup()
                 .addGap(23, 23, 23)
@@ -557,6 +593,172 @@ public final class Gui extends javax.swing.JFrame {
                 .addGap(30, 30, 30))
         );
 
+        agentiDialoxBox.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        agentiDialoxBox.setTitle("Informatii Agenti");
+        agentiDialoxBox.setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
+        agentiDialoxBox.setUndecorated(true);
+        agentiDialoxBox.setResizable(false);
+
+        jScrollPane4.setViewportView(listaInformatiiAgenti);
+
+        butonExitFereastraAgenti.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        butonExitFereastraAgenti.setText("Exit");
+        butonExitFereastraAgenti.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                butonExitFereastraAgentiActionPerformed(evt);
+            }
+        });
+
+        labelInformatiiAgenti.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        labelInformatiiAgenti.setText("Nume                        Varsta                   Salariu");
+
+        javax.swing.GroupLayout agentiDialoxBoxLayout = new javax.swing.GroupLayout(agentiDialoxBox.getContentPane());
+        agentiDialoxBox.getContentPane().setLayout(agentiDialoxBoxLayout);
+        agentiDialoxBoxLayout.setHorizontalGroup(
+            agentiDialoxBoxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(agentiDialoxBoxLayout.createSequentialGroup()
+                .addGap(32, 32, 32)
+                .addGroup(agentiDialoxBoxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(agentiDialoxBoxLayout.createSequentialGroup()
+                        .addComponent(labelInformatiiAgenti)
+                        .addGap(93, 93, 93))
+                    .addGroup(agentiDialoxBoxLayout.createSequentialGroup()
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                        .addComponent(butonExitFereastraAgenti, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18))))
+        );
+        agentiDialoxBoxLayout.setVerticalGroup(
+            agentiDialoxBoxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(agentiDialoxBoxLayout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addGroup(agentiDialoxBoxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(butonExitFereastraAgenti, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, agentiDialoxBoxLayout.createSequentialGroup()
+                        .addComponent(labelInformatiiAgenti)
+                        .addGap(6, 6, 6)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(40, Short.MAX_VALUE))
+        );
+
+        locuinteDeCumparatDialoxBox.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        locuinteDeCumparatDialoxBox.setTitle("Informatii locuinte de cumparat");
+        locuinteDeCumparatDialoxBox.setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
+        locuinteDeCumparatDialoxBox.setResizable(false);
+
+        jScrollPane5.setViewportView(listaInformatiiLocuinteDeCumparat);
+
+        butonExitFereastraLocuinteDeCumparat.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        butonExitFereastraLocuinteDeCumparat.setText("Exit");
+        butonExitFereastraLocuinteDeCumparat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                butonExitFereastraLocuinteDeCumparatActionPerformed(evt);
+            }
+        });
+
+        labelStructuraListaLocuinteDeCumparat.setBackground(new java.awt.Color(255, 255, 255));
+        labelStructuraListaLocuinteDeCumparat.setFont(new java.awt.Font("Times New Roman", 2, 12)); // NOI18N
+        labelStructuraListaLocuinteDeCumparat.setText(" Adresa                     Suprafata               Numar Camere              Pret vanzare        Pret inchiriere");
+
+        butonOkCumparaLocuinta.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        butonOkCumparaLocuinta.setText("Finalizare");
+        butonOkCumparaLocuinta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                butonOkCumparaLocuintaActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout locuinteDeCumparatDialoxBoxLayout = new javax.swing.GroupLayout(locuinteDeCumparatDialoxBox.getContentPane());
+        locuinteDeCumparatDialoxBox.getContentPane().setLayout(locuinteDeCumparatDialoxBoxLayout);
+        locuinteDeCumparatDialoxBoxLayout.setHorizontalGroup(
+            locuinteDeCumparatDialoxBoxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(locuinteDeCumparatDialoxBoxLayout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addGroup(locuinteDeCumparatDialoxBoxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(labelStructuraListaLocuinteDeCumparat, javax.swing.GroupLayout.DEFAULT_SIZE, 467, Short.MAX_VALUE)
+                    .addComponent(jScrollPane5))
+                .addGap(43, 43, 43)
+                .addGroup(locuinteDeCumparatDialoxBoxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(butonOkCumparaLocuinta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(butonExitFereastraLocuinteDeCumparat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
+        );
+        locuinteDeCumparatDialoxBoxLayout.setVerticalGroup(
+            locuinteDeCumparatDialoxBoxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(locuinteDeCumparatDialoxBoxLayout.createSequentialGroup()
+                .addGroup(locuinteDeCumparatDialoxBoxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(locuinteDeCumparatDialoxBoxLayout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addComponent(labelStructuraListaLocuinteDeCumparat, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE))
+                    .addGroup(locuinteDeCumparatDialoxBoxLayout.createSequentialGroup()
+                        .addGap(76, 76, 76)
+                        .addComponent(butonOkCumparaLocuinta)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(butonExitFereastraLocuinteDeCumparat)))
+                .addContainerGap(33, Short.MAX_VALUE))
+        );
+
+        locuinteDeInchiriatDialoxBox.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        locuinteDeInchiriatDialoxBox.setTitle("Informatii locuinte de cumparat");
+        locuinteDeInchiriatDialoxBox.setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
+        locuinteDeInchiriatDialoxBox.setResizable(false);
+
+        jScrollPane6.setViewportView(listaInformatiiLocuinteDeInchiriat);
+
+        butonExitFereastraLocuinteDeInchiriat.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        butonExitFereastraLocuinteDeInchiriat.setText("Exit");
+        butonExitFereastraLocuinteDeInchiriat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                butonExitFereastraLocuinteDeInchiriatActionPerformed(evt);
+            }
+        });
+
+        labelStructuraListaLocuinteDeCumparat1.setBackground(new java.awt.Color(255, 255, 255));
+        labelStructuraListaLocuinteDeCumparat1.setFont(new java.awt.Font("Times New Roman", 2, 12)); // NOI18N
+        labelStructuraListaLocuinteDeCumparat1.setText(" Adresa                     Suprafata               Numar Camere              Pret vanzare        Pret inchiriere");
+
+        butonOkInchiriazaLocuinta.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        butonOkInchiriazaLocuinta.setText("Finalizare");
+        butonOkInchiriazaLocuinta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                butonOkInchiriazaLocuintaActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout locuinteDeInchiriatDialoxBoxLayout = new javax.swing.GroupLayout(locuinteDeInchiriatDialoxBox.getContentPane());
+        locuinteDeInchiriatDialoxBox.getContentPane().setLayout(locuinteDeInchiriatDialoxBoxLayout);
+        locuinteDeInchiriatDialoxBoxLayout.setHorizontalGroup(
+            locuinteDeInchiriatDialoxBoxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(locuinteDeInchiriatDialoxBoxLayout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addGroup(locuinteDeInchiriatDialoxBoxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(labelStructuraListaLocuinteDeCumparat1, javax.swing.GroupLayout.DEFAULT_SIZE, 467, Short.MAX_VALUE)
+                    .addComponent(jScrollPane6))
+                .addGap(43, 43, 43)
+                .addGroup(locuinteDeInchiriatDialoxBoxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(butonOkInchiriazaLocuinta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(butonExitFereastraLocuinteDeInchiriat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
+        );
+        locuinteDeInchiriatDialoxBoxLayout.setVerticalGroup(
+            locuinteDeInchiriatDialoxBoxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(locuinteDeInchiriatDialoxBoxLayout.createSequentialGroup()
+                .addGroup(locuinteDeInchiriatDialoxBoxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(locuinteDeInchiriatDialoxBoxLayout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addComponent(labelStructuraListaLocuinteDeCumparat1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE))
+                    .addGroup(locuinteDeInchiriatDialoxBoxLayout.createSequentialGroup()
+                        .addGap(76, 76, 76)
+                        .addComponent(butonOkInchiriazaLocuinta)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(butonExitFereastraLocuinteDeInchiriat)))
+                .addContainerGap(33, Short.MAX_VALUE))
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
@@ -638,6 +840,11 @@ public final class Gui extends javax.swing.JFrame {
 
         butonAfisareAgentiVanzari.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         butonAfisareAgentiVanzari.setText("Agenti Vanzare");
+        butonAfisareAgentiVanzari.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                butonAfisareAgentiVanzariActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
@@ -742,10 +949,32 @@ public final class Gui extends javax.swing.JFrame {
     
     public void populareListaLocuinte() {
         for(Locuinta locuinta: agentie.getLocuinte()) {
-            listaLocuinte.addElement(locuinta + "  |  normala");
+            listaLocuinte.addElement(locuinta);
         }
         for(Locuinta locuintaInchiriata: agentie.getLocuinteInchiriate()) {
-            listaLocuinte.addElement(locuintaInchiriata + "  |  inchiriata");
+            listaLocuinte.addElement(locuintaInchiriata);
+        }
+    }
+    
+    public void populareListaAgenti() {
+        for(AgentVanzari agent: agentie.getAgentiVanzare()) {
+            listaAgenti.addElement(agent);
+        }
+    }
+    
+    public void populareListaLocuinteDeCumparat() {
+        for(Locuinta loc: agentie.getLocuinte()) {
+            if(loc.getTip().equals("disponibila")) {
+                listaLocuinteDeCumparat.addElement(loc);
+            }
+        }
+    }
+    
+    public void populareListaLocuinteDeInchiriat() {
+        for(Locuinta loc: agentie.getLocuinte()) {
+            if(loc.getTip().equals("disponibila")) {
+                listaLocuinteDeInchiriat.addElement(loc);
+            }
         }
     }
     
@@ -804,11 +1033,13 @@ public final class Gui extends javax.swing.JFrame {
                 "Selecteaza", JOptionPane.WARNING_MESSAGE);
         }
         try{
-            if(!p.getStatut().equals("vanzator")) {
-                JOptionPane.showMessageDialog(this, "Clientul selectat nu este vanzator!",
+            if(!p.getStatut().equals("cumparator")) {
+                JOptionPane.showMessageDialog(this, "Nu poti vinde unui client vanzator!",
                     "Eroare", JOptionPane.ERROR_MESSAGE);
             } else {
-
+                 clientGlobal = (ClientCumparator) listaClienti.getElementAt(index);
+                 locuinteDeCumparatDialoxBox.pack();
+                 locuinteDeCumparatDialoxBox.setVisible(true);
             }
         } catch (NullPointerException e) {
 
@@ -818,6 +1049,7 @@ public final class Gui extends javax.swing.JFrame {
     private void butonCumparaLocuintaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butonCumparaLocuintaActionPerformed
         int index = 0;
         Persoana p = null;
+        ClientVanzator clientVanzator;
         try{
             index = listaInformatiiClienti.getSelectedIndex();
             p = (Persoana) listaClienti.getElementAt(index);
@@ -826,11 +1058,32 @@ public final class Gui extends javax.swing.JFrame {
                 "Selecteaza", JOptionPane.WARNING_MESSAGE);
         }
         try{
-            if(!p.getStatut().equals("cumparator")) {
-                JOptionPane.showMessageDialog(this, "Clientul selectat nu este cumparator!",
+            if(!p.getStatut().equals("vanzator")) {
+                JOptionPane.showMessageDialog(this, "Nu poti cumpara de la un client cumparator!",
                     "Eroare", JOptionPane.ERROR_MESSAGE);
             } else {
-
+                clientVanzator = (ClientVanzator) listaClienti.getElementAt(index);
+                ServiciuVanzator serviciuVanzator = new ServiciuVanzator(agent1, agentie);
+                try{
+                    serviciuVanzator.cumparaLocuinta(clientVanzator);
+                    int alegere = JOptionPane.showConfirmDialog(null, "Finalizati tranzactia?",
+                    "Finalizare Cumparare", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                    if (alegere == JOptionPane.YES_OPTION) {
+                        Locuinta l = clientVanzator.getLocuinta();
+                        l.setTip("disponibila");
+                        listaLocuinte.removeElement(clientVanzator.getLocuinta());
+                        
+                        listaLocuinte.addElement(l);
+                        listaClienti.removeElement(clientVanzator);
+                        listaAgentie.setElementAt("Buget: " + currencyFormatter.format(agentie.getBuget()), 1);
+                        labelBugetAgentie.setText("Buget: " + currencyFormatter.format(agentie.getBuget()));
+                    }
+       
+                } catch(BaniInsuficientiException e) {
+                    JOptionPane.showMessageDialog(this, "Agentia nu are suficienti bani sa cumpere locuinta lui " + 
+                            clientVanzator.getNume() + "!",
+                    "Eroare", JOptionPane.ERROR_MESSAGE);
+                }
             }
         } catch (NullPointerException e) {
 
@@ -879,7 +1132,11 @@ public final class Gui extends javax.swing.JFrame {
             loc.setPretInchiriere(pretInchiriere);
             loc.setPretVanzare(pretVanzare);
             loc.setSuprafata(suprafata);
-            listaLocuinte.addElement(loc + "  |  normala");
+            loc.setTip("in negocieri");
+            
+            agentie.adaugaLocuinta(loc);
+            
+            listaLocuinte.addElement(loc);
             ClientVanzator clientVanzator = new ClientVanzator(nume, varsta, loc);
             listaClienti.addElement(clientVanzator);
             
@@ -977,28 +1234,124 @@ public final class Gui extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Clientul vanzator nu poate inchiria locuinta!",
                     "Eroare", JOptionPane.ERROR_MESSAGE);
             } else {
-
+                clientGlobal2 = (ClientCumparator) listaClienti.getElementAt(index);
+                locuinteDeInchiriatDialoxBox.pack();
+                locuinteDeInchiriatDialoxBox.setVisible(true);
             }
         } catch (NullPointerException e) {
 
         }
     }//GEN-LAST:event_butonInchiriazaLocuintaActionPerformed
 
+    private void butonAfisareAgentiVanzariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butonAfisareAgentiVanzariActionPerformed
+        agentiDialoxBox.pack();
+        agentiDialoxBox.setVisible(true);
+    }//GEN-LAST:event_butonAfisareAgentiVanzariActionPerformed
+
+    private void butonExitFereastraAgentiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butonExitFereastraAgentiActionPerformed
+        agentiDialoxBox.dispose();
+    }//GEN-LAST:event_butonExitFereastraAgentiActionPerformed
+
+    private void butonExitFereastraLocuinteDeCumparatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butonExitFereastraLocuinteDeCumparatActionPerformed
+        locuinteDeCumparatDialoxBox.dispose();
+    }//GEN-LAST:event_butonExitFereastraLocuinteDeCumparatActionPerformed
+
+    private void butonOkCumparaLocuintaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butonOkCumparaLocuintaActionPerformed
+        try{
+            int index = listaInformatiiLocuinteDeCumparat.getSelectedIndex();
+            Locuinta locuinta = (Locuinta) listaLocuinteDeCumparat.getElementAt(index);
+            
+            try{
+                ServiciuCumparator serviciuCumparator = new ServiciuCumparator(agent1, agentie);
+                serviciuCumparator.vindeLocuinta(clientGlobal, locuinta);
+                
+                int alegere = JOptionPane.showConfirmDialog(null, "Finalizati tranzactia?",
+                    "Finalizare Cumparare", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                    if (alegere == JOptionPane.YES_OPTION) {
+                        listaLocuinte.removeElement(locuinta);
+    
+                        listaClienti.removeElement(clientGlobal);
+                        listaAgentie.setElementAt("Numar locuinte agentie: " + agentie.getLocuinte().size(), 3);
+                        listaAgentie.setElementAt("Numar clienti agentie: " + (agentie.getClientiVanzatori().size() +
+                                agentie.getClientiCumparatori().size()), 2);
+                        locuinteDeCumparatDialoxBox.dispose();
+                    }
+                
+            } catch(BaniInsuficientiException e) {
+                JOptionPane.showMessageDialog(this, "Nu ai suficienti bani sa cumperi aceasta locuinta!", 
+                    "Eroare", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch(ArrayIndexOutOfBoundsException e) {
+            JOptionPane.showMessageDialog(this, "Selecteaza o locuinta!",
+                "Selecteaza", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_butonOkCumparaLocuintaActionPerformed
+
+    private void butonExitFereastraLocuinteDeInchiriatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butonExitFereastraLocuinteDeInchiriatActionPerformed
+      locuinteDeInchiriatDialoxBox.dispose();
+    }//GEN-LAST:event_butonExitFereastraLocuinteDeInchiriatActionPerformed
+
+    private void butonOkInchiriazaLocuintaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butonOkInchiriazaLocuintaActionPerformed
+        int perioada = 0;
+        try{
+            int index = listaInformatiiLocuinteDeInchiriat.getSelectedIndex();
+            Locuinta locuinta = (Locuinta) listaLocuinteDeInchiriat.getElementAt(index);
+            try{
+                System.out.println("dasdasdasfgasf");
+                ServiciuCumparator serviciuCumparator = new ServiciuCumparator(agent1, agentie);
+                
+                String perioadaText = JOptionPane.showInputDialog(this, "Pentru ce perioada inchiriezi(luni)?",
+                "Alegere durata inchiriere", JOptionPane.QUESTION_MESSAGE);
+                try {
+                    if ((perioadaText != null) || (perioadaText.length() > 0)) {
+                        perioada = Integer.valueOf(perioadaText);
+                    }
+                } catch (NullPointerException | NumberFormatException e) {
+
+                }
+                
+                serviciuCumparator.inchiriazaLocuinta(clientGlobal2, locuinta, perioada);
+                
+                int alegere = JOptionPane.showConfirmDialog(null, "Finalizati tranzactia?",
+                    "Finalizare Inchiriere", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                    if (alegere == JOptionPane.YES_OPTION) {
+                        listaLocuinte.removeAllElements();
+                        populareListaLocuinte();
+
+                        locuinteDeInchiriatDialoxBox.dispose();
+                    }
+                
+            } catch(BaniInsuficientiException e) {
+                JOptionPane.showMessageDialog(this, "Nu ai suficienti bani sa inchiriezi aceasta locuinta pentru"
+                        + perioada +" luni!", 
+                    "Eroare", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch(ArrayIndexOutOfBoundsException e) {
+            JOptionPane.showMessageDialog(this, "Selecteaza o locuinta!",
+                "Selecteaza", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_butonOkInchiriazaLocuintaActionPerformed
+
     public void populareTest() {
-        Locuinta locuinta1 = new Locuinta(50, 3, "Strada Buzasti, nr. 68", 20000, 150);
-        Locuinta locuinta2 = new Locuinta(43, 2, "Vasile Alecsandri, nr. 69", 15000, 110);
-        Locuinta locuinta3 = new Locuinta(63, 3, "Splaiul Independentei, nr. 290", 30000, 180);
+        Locuinta locuinta1 = new Locuinta(50, 3, "Strada Buzasti, nr. 68", 20000, 150, "disponibila");
+        Locuinta locuinta2 = new Locuinta(43, 2, "Vasile Alecsandri, nr. 69", 15000, 110, "disponibila");
+        Locuinta locuinta3 = new Locuinta(63, 3, "Splaiul Independentei, nr. 290", 30000, 180, "disponibila");
 
         ClientCumparator clientCumparator1 = new ClientCumparator("Ion", 35, 25000);
         ClientCumparator clientCumparator2 = new ClientCumparator("Alina", 30, 30000);
         ClientCumparator clientCumparator3 = new ClientCumparator("Marius", 40, 10000);
 
+        locuinta1.setTip("in negocieri");
         ClientVanzator clientVanzator1 = new ClientVanzator("Marin", 40, locuinta1);
-
-        AgentVanzari agent1 = new AgentVanzari("Andreea", 31);
+        
+        agent1 = new AgentVanzari("Andreea", 31, 2700);
+        agent2 = new AgentVanzari("Daniel", 29, 3500);
 
         ServiciuCumparator cumparare = new ServiciuCumparator(agent1, agentie);
         ServiciuVanzator vanzare = new ServiciuVanzator(agent1, agentie);
+        
+        agentie.adaugaAgentVanzareAgentie(agent1);
+        agentie.adaugaAgentVanzareAgentie(agent2);
 
         agentie.adaugaClientCumparator(clientCumparator1);
         agentie.adaugaClientCumparator(clientCumparator2);
@@ -1006,6 +1359,7 @@ public final class Gui extends javax.swing.JFrame {
 
         agentie.adaugaClientVanzator(clientVanzator1);
 
+        agentie.adaugaLocuinta(locuinta1);
         agentie.adaugaLocuinta(locuinta2);
         agentie.adaugaLocuinta(locuinta3);
     }
@@ -1029,6 +1383,7 @@ public final class Gui extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDialog adaugaClientCumparatorDialogBox;
     private javax.swing.JDialog adaugaClientLocuintaDialogBox;
+    private javax.swing.JDialog agentiDialoxBox;
     private javax.swing.JButton butonAdaugaClientCumparator;
     private javax.swing.JButton butonAdaugaClientVanzator;
     private javax.swing.JButton butonAfisareAgentiVanzari;
@@ -1040,17 +1395,25 @@ public final class Gui extends javax.swing.JFrame {
     private javax.swing.JButton butonExit;
     private javax.swing.JButton butonExitFereastraAdaugaClientCumparator;
     private javax.swing.JButton butonExitFereastraAdaugaClientLocuinta;
+    private javax.swing.JButton butonExitFereastraAgenti;
     private javax.swing.JButton butonExitFereastraClienti;
     private javax.swing.JButton butonExitFereastraLocuinte;
+    private javax.swing.JButton butonExitFereastraLocuinteDeCumparat;
+    private javax.swing.JButton butonExitFereastraLocuinteDeInchiriat;
     private javax.swing.JButton butonInchiriazaLocuinta;
     private javax.swing.JButton butonOkAdaugaClientCumparator;
     private javax.swing.JButton butonOkAdaugaClientLocuinta;
+    private javax.swing.JButton butonOkCumparaLocuinta;
+    private javax.swing.JButton butonOkInchiriazaLocuinta;
     private javax.swing.JButton butonSchimbaBugetAgentie;
     private javax.swing.JButton butonSchimbaNumeAgentie;
     private javax.swing.JDialog clientiDialoxBox;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JLabel labelAdresa;
     private javax.swing.JLabel labelAdresaAgentie;
     private javax.swing.JLabel labelBugetAgentie;
@@ -1059,6 +1422,7 @@ public final class Gui extends javax.swing.JFrame {
     private javax.swing.JLabel labelClienCumparator;
     private javax.swing.JLabel labelClientVanzator;
     private javax.swing.JLabel labelInfoClienti;
+    private javax.swing.JLabel labelInformatiiAgenti;
     private javax.swing.JLabel labelLocuinta;
     private javax.swing.JLabel labelNumarCamere;
     private javax.swing.JLabel labelNumeAgentie;
@@ -1069,15 +1433,22 @@ public final class Gui extends javax.swing.JFrame {
     private javax.swing.JLabel labelPretVanzare;
     private javax.swing.JLabel labelPretVanzareEUR;
     private javax.swing.JLabel labelStructuraLista;
+    private javax.swing.JLabel labelStructuraListaLocuinteDeCumparat;
+    private javax.swing.JLabel labelStructuraListaLocuinteDeCumparat1;
     private javax.swing.JLabel labelSuprafata;
     private javax.swing.JLabel labelSuprafataMp;
     private javax.swing.JLabel labelVarstaAni;
     private javax.swing.JLabel labelVarstaAni1;
     private javax.swing.JLabel labelVarstaClient;
     private javax.swing.JLabel labelVarstaClientCumparator;
+    private javax.swing.JList<String> listaInformatiiAgenti;
     private javax.swing.JList<String> listaInformatiiAgentie;
     private javax.swing.JList<String> listaInformatiiClienti;
     private javax.swing.JList<String> listaInformatiiLocuinte;
+    private javax.swing.JList<String> listaInformatiiLocuinteDeCumparat;
+    private javax.swing.JList<String> listaInformatiiLocuinteDeInchiriat;
+    private javax.swing.JDialog locuinteDeCumparatDialoxBox;
+    private javax.swing.JDialog locuinteDeInchiriatDialoxBox;
     private javax.swing.JDialog locuinteDialoxBox;
     private javax.swing.JPanel panelButoane;
     private javax.swing.JPanel panelInformatiiAgentie;

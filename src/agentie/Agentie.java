@@ -12,6 +12,7 @@ public class Agentie {
     private ArrayList<ClientVanzator> clientiVanzatori = new ArrayList<>();
     private ArrayList<Locuinta> locuinte = new ArrayList<>();
     private ArrayList<Locuinta> locuinteInchiriate = new ArrayList<>();
+    private ArrayList<AgentVanzari> agentiVanzare = new ArrayList<>();
     private ServiciuCumparator cumparare;
     private ServiciuVanzator vanzare;
 
@@ -117,6 +118,7 @@ public class Agentie {
 
     //locuinta este locuinta din vectorul de locuinte
     public void adaugaLocuintaInchiriata(Locuinta locuinta) {
+        locuinta.setTip("inchiriata");
         locuinteInchiriate.add(locuinta);
         int index = locuinte.indexOf(locuinta);
         locuinte.remove(index);
@@ -130,6 +132,14 @@ public class Agentie {
     public void eliberareLocuintaInchiriata(Locuinta l) {
         locuinte.add(l);
         locuinteInchiriate.remove(l);
+    }
+
+    public ArrayList<AgentVanzari> getAgentiVanzare() {
+        return agentiVanzare;
+    }
+
+    public void adaugaAgentVanzareAgentie(AgentVanzari agentVanzare) {
+        this.agentiVanzare.add(agentVanzare);
     }
 
     public void afisare() {
@@ -181,5 +191,5 @@ public class Agentie {
             }
         }
     }
-    
+
 }   //Agentie

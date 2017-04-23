@@ -14,6 +14,7 @@ public class Locuinta {
     private String adresa;
     private double pretVanzare;
     private double pretInchiriere;
+    private String tip;
 
     public Locuinta() {
     }
@@ -30,9 +31,10 @@ public class Locuinta {
         
     }
 
-    public Locuinta(double suprafata, int nrCamere, String adresa, double pretVanzare, double pretInchiriere) {
+    public Locuinta(double suprafata, int nrCamere, String adresa, double pretVanzare, double pretInchiriere, String tip) {
         validareDate();
-
+        
+        this.tip = "disponibila";
         this.suprafata = suprafata;
         this.nrCamere = nrCamere;
         this.adresa = adresa;
@@ -108,11 +110,19 @@ public class Locuinta {
         System.out.println("    Pret inchiriere: " + getPretInchiriere() + " EUR/luna");
     }
 
+    public String getTip() {
+        return tip;
+    }
+
+    public void setTip(String tip) {
+        this.tip = tip;
+    }
+
     @Override
     public String toString() {
         return getAdresa() + "  |  " + getSuprafata() + "  |  "
                 + getNrCamere() + "  |  " + currencyFormatter.format(getPretVanzare()) + "  |  "
-                + currencyFormatter.format(getPretInchiriere()) + "/luna";
+                + currencyFormatter.format(getPretInchiriere()) + "/luna" + "  |  " + getTip();
     }
 
 }   //Locuinta
